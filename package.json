@@ -1,0 +1,28 @@
+{
+  "name": "vanilla-snake",
+  "version": "0.0.1",
+  "description": "nothing",
+  "main": "app.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "chai": "^3.5.0"
+  },
+  "devDependencies": {
+    "mocha": "^3.2.0"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/svantetic/vanilla-snake.git"
+  },
+  "author": "svantetic",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/svantetic/vanilla-snake/issues"
+  },
+  "homepage": "https://github.com/svantetic/vanilla-snake#readme"
+}
