@@ -3,10 +3,26 @@
 	<head>
 		<title>Vanilla Snake</title>
 	</head>
+	<link rel="stylesheet" href="node_modules/mocha/mocha.css">
 	<body>
-		<canvas width="400" height="700"id="canvas">
+		<canvas width="800" height="300"id="canvas">
 			
 		</canvas>
+		<div id="mocha">
+			
+		</div>
 	</body>
-	<script src="app.js"></script>
+	
+	<script src="node_modules/mocha/mocha.js"></script>
+    <script src="node_modules/chai/chai.js"></script>
+    <script>mocha.setup('bdd')</script>
+
+    <script src="app.js"></script>
+
+    <script src="test/canvasTest.js"></script>
+
+    <script>
+      mocha.run();
+    </script>
+  </body>
 </html>
