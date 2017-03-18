@@ -42,8 +42,20 @@ describe("Canvas", function() {
 describe('Snake tests', function() {
 	it('should have config element for snake length larger than 1', function() {
 		expect(config).to.have.property('snakeLength').and.to.be.above(2);
+		assert.equal(config.snakeLength, snake.blocksNumber, 'these two are not equal');
 		// assert.isAtLeast(config.snakeLength, 2, 'snake length is lower than two');
 	});
+	it('should have not null body', function() {
+		assert.isDefined(snake.body,'body undefined');
+	});
+	it('should be derived from Snake class', function() {
+		assert.instanceOf(snake, Snake, 'snake is not instance of snake!');
+	})
+})
 
-
+describe('Block' ,function() {
+	it('should be derived from Block class', function() {
+		var testBlock = new Block();
+		assert.instanceOf(testBlock, Block, 'block is not instance of Block!');
+	})
 })
