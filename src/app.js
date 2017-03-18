@@ -1,7 +1,8 @@
 var config = {
 	randomDotsColor: 'red',
 	backgroundColor: 'black',
-	snakeColor: 'white'
+	snakeColor: 'white',
+	snakeLength: 3
 };
 
 function Canvas(selector) {
@@ -21,7 +22,7 @@ function Canvas(selector) {
 		this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 	}
 
-	this.randomizeField = function(dotsToGenerate) {
+	this.randomizeField = function() {
 		this.randomDotPosition.x = Math.floor(Math.random() * this.canvas.width);
 		this.randomDotPosition.y = Math.floor(Math.random() * this.canvas.height);
 		this.ctx.fillStyle = this.randomDotsColor;
@@ -39,10 +40,10 @@ function Block(x, y, width, height, color) {
 	this.color = color;
 }
 
-function Snake(blocksNumber) {
+function Snake() {
 	this.body = [];
 	this.bodyColor = config.snakeColor;
-	this.blocksNumber = blocksNumber;
+	this.blocksNumber = config.snakeLength;
 	this.init = function() {
 		for (let x = 0; x < this.blocksNumber; x++) {
 			this.body.push(new Block(50+x*10, 50, 10, 10, this.bodyColor));
@@ -76,13 +77,20 @@ function Snake(blocksNumber) {
 }
 const canvas = new Canvas('#canvas');
 canvas.init();
+
 const snake = new Snake(15);
 snake.init();
-console.log(snake.body);
-canvas.randomizeField(10);
-// window.setInterval(function() {
-// 	snake.moveRight();
-// 	canvas.clear();
-// 	snake.draw();
 
-// }, 500);
+canvas.randomizeField();
+
+const fps = 15;
+function draw() {
+    setTimeout(function() {
+        requestAnimationFrame(draw);
+        	snake.moveRight();
+			canvas.clear();
+			snake.draw();
+    }, 1000 / fps);
+}
+
+draw();

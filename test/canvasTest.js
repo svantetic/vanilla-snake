@@ -1,4 +1,5 @@
 var assert = chai.assert;
+var expect = chai.expect;
 describe("Canvas", function() {
 	it('should be object', function() {
 		
@@ -36,4 +37,13 @@ describe("Canvas", function() {
 		assert(config.hasOwnProperty('randomDotsColor'), 'config does not have randomDotsColor property');
 		
 	})
+})
+
+describe('Snake tests', function() {
+	it('should have config element for snake length larger than 1', function() {
+		expect(config).to.have.property('snakeLength').and.to.be.above(2);
+		// assert.isAtLeast(config.snakeLength, 2, 'snake length is lower than two');
+	});
+
+
 })
