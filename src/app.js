@@ -54,14 +54,33 @@ class Snake {
 			this.body.push(new Block(50+x*10, 50, 10, 10, this.bodyColor));
 		}
 	}
-
+	getHeadPosition() {
+		return {
+			x: this.body[0].x,
+			y: this.body[0].y
+		}
+	}
 	moveRight() {
 		this.body.shift();
-		console.log(this.body);
 		this.body.push(
-			new Block(this.getLastBlockPosition().x+10, this.getLastBlockPosition().y, 10, 10, 'rgb(255,255,255)'));
+			new Block(this.getLastBlockPosition().x+10, this.getLastBlockPosition().y, 10, 10, this.bodyColor));
 	}
 
+	moveDown() {
+		this.body.shift();
+		this.body.push(
+			new Block(this.getLastBlockPosition().x, this.getLastBlockPosition().y + 10, 10, 10, this.bodyColor));
+	}
+
+	moveUp() {
+		this.body.shift();
+		this.body.push(new Block(this.getLastBlockPosition().x, this.getLastBlockPosition().y - 10, 10, 10, this.bodyColor));
+	}
+
+	moveLeft() {
+		this.body.shift();
+		this.body.push(new Block(this.getLastBlockPosition().x - 10, this.getLastBlockPosition().y, 10, 10, this.bodyColor));
+	}
 	getLastBlockPosition() {
 		return {
 					x: this.body[this.body.length-1].x,
@@ -91,9 +110,9 @@ const fps = 15;
 function draw() {
     setTimeout(function() {
         requestAnimationFrame(draw);
-        	snake.moveRight();
 			canvas.clear();
 			snake.draw();
     }, 1000 / fps);
 }
 
+draw();

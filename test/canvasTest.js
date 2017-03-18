@@ -39,7 +39,7 @@ describe("Canvas", function() {
 	})
 })
 
-describe('Snake tests', function() {
+describe('Snake', function() {
 	it('should have config element for snake length larger than 1', function() {
 		expect(config).to.have.property('snakeLength').and.to.be.above(2);
 		assert.equal(config.snakeLength, snake.blocksNumber, 'these two are not equal');
@@ -50,6 +50,52 @@ describe('Snake tests', function() {
 	});
 	it('should be derived from Snake class', function() {
 		assert.instanceOf(snake, Snake, 'snake is not instance of snake!');
+	});
+
+	it('should move right', function() {
+		let lastPosition = snake.getLastBlockPosition();
+		snake.init();
+		snake.draw();
+		snake.moveRight();
+		let secondOfLastBlockPosition = snake.body[snake.body.length - 2].x;
+		assert.equal(lastPosition.x, secondOfLastBlockPosition, 'snake is not moving!');
+	});
+	it('should have moveDown function', function() {
+		assert.isFunction(snake.moveDown, 'moveDown is not a function!');
+	})
+	it('should move down', function() {
+		let lastPosition = snake.getLastBlockPosition();
+		canvas.clear();
+		snake.draw();
+		canvas.clear();
+		snake.moveDown();
+		let newPosition = snake.getLastBlockPosition();
+		assert(newPosition.x == lastPosition.x && newPosition.y == lastPosition.y + 10, 'snake is not moving down');
+	});
+it('should move up', function() {
+		let lastPosition = snake.getLastBlockPosition();
+		canvas.clear();
+		snake.draw();
+		canvas.clear();
+		snake.moveUp();
+		let newPosition = snake.getLastBlockPosition();
+		assert(newPosition.x == lastPosition.x && newPosition.y == lastPosition.y - 10, 'snake is not moving up');
+	});it('should move left', function() {
+		let lastPosition = snake.getLastBlockPosition();
+		canvas.clear();
+		snake.draw();
+		canvas.clear();
+		snake.moveLeft();
+		let newPosition = snake.getLastBlockPosition();
+		assert(newPosition.x == lastPosition.x - 10 && newPosition.y == lastPosition.y, 'snake is not moving down');
+	});
+	it('should have checkHeadPosition and checkHeadPosition should return snake\'s head position', function(){
+		assert.isDefined(snake.getHeadPosition(), 'x', 'function does not return x position');
+		assert.isDefined(snake.getHeadPosition(), 'y', 'function does not return x position');
+		assert.isAtLeast(snake.getHeadPosition().x, 0, 'function does return x < 0 value');
+		assert.isAtLeast(snake.getHeadPosition().y, 0, 'function does return y < 0 value');
+
+
 	})
 })
 
