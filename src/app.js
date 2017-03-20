@@ -46,7 +46,6 @@ class Snake {
 		this.body = [];
 		this.bodyColor = config.snakeColor;
 		this.blocksNumber = config.snakeLength;
-		console.log(this.body);
 	}
 
 	init() {
@@ -90,14 +89,12 @@ class Snake {
 
 	draw() {
 		for (var blockNumber in this.body) {
-			// console.log('im drawing');
-			// console.log(this.body[blockNumber]);
 			canvas.ctx.fillStyle = this.body[blockNumber].color;
 			canvas.ctx.fillRect(this.body[blockNumber].x, this.body[blockNumber].y,
 				this.body[blockNumber].width, this.body[blockNumber].height);
+			}
+		}
 	}
-}
-}
 const canvas = new Canvas('#canvas');
 canvas.init();
 
