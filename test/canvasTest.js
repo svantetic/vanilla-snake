@@ -63,41 +63,22 @@ describe('Snake', function() {
 	it('should have moveDown function', function() {
 		assert.isFunction(snake.moveDown, 'moveDown is not a function!');
 	})
-	it('should move down', function() {
-		let lastPosition = snake.getLastBlockPosition();
-		canvas.clear();
-		snake.draw();
-		canvas.clear();
-		snake.moveDown();
-		let newPosition = snake.getLastBlockPosition();
-		assert(newPosition.x == lastPosition.x && newPosition.y == lastPosition.y + 10, 'snake is not moving down');
-	});
-it('should move up', function() {
-		let lastPosition = snake.getLastBlockPosition();
-		canvas.clear();
-		snake.draw();
-		canvas.clear();
-		snake.moveUp();
-		let newPosition = snake.getLastBlockPosition();
-		assert(newPosition.x == lastPosition.x && newPosition.y == lastPosition.y - 10, 'snake is not moving up');
-	});it('should move left', function() {
-		let lastPosition = snake.getLastBlockPosition();
-		canvas.clear();
-		snake.draw();
-		canvas.clear();
-		snake.moveLeft();
-		let newPosition = snake.getLastBlockPosition();
-		assert(newPosition.x == lastPosition.x - 10 && newPosition.y == lastPosition.y, 'snake is not moving down');
-	});
+	it('should have direction property and changeDirection() function', function() {
+		assert.isDefined(snake.direction, 'snake does not have direction property');
+		assert.isFunction(snake.changeDirection(), 'snake does not have change Direction method');
+	})
 	it('should have checkHeadPosition and checkHeadPosition should return snake\'s head position', function(){
 		assert.isDefined(snake.getHeadPosition(), 'x', 'function does not return x position');
 		assert.isDefined(snake.getHeadPosition(), 'y', 'function does not return x position');
 		assert.isAtLeast(snake.getHeadPosition().x, 0, 'function does return x < 0 value');
 		assert.isAtLeast(snake.getHeadPosition().y, 0, 'function does return y < 0 value');
+	});
 
+	it('should have initEventListeners method', function() {
+		assert.isFunction(snake.initEventListeners, "snake does not have event initializer method");
+	});
+});
 
-	})
-})
 
 describe('Block' ,function() {
 	it('should be derived from Block class', function() {

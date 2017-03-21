@@ -14,10 +14,11 @@ class Canvas {
 		this.backgroundColor = config.backgroundColor;
 	}
 
-	init() {
+	init(snake) {
 		this.clear();
+		snake.initEventListeners();
 	}
-
+	
 	clear() {
 		this.ctx.fillStyle = this.backgroundColor;
 		this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
@@ -48,6 +49,22 @@ class Snake {
 		this.blocksNumber = config.snakeLength;
 	}
 
+	initEventListeners() {
+		var self = this;
+		window.addEventListener("keypress", function(k) {
+			let keyPressed = k.key;
+			switch (keyPressed) {
+				case 'a': 
+					self.changeDirection('left');
+				case 'w':
+					self.changeDirection('up');
+				case 'd':
+					self.changeDirection('left');
+				case 's':
+					self.changeDirection('down');
+			}
+		}, false);
+	}
 	init() {
 		for (let x = 0; x < this.blocksNumber; x++) {
 			this.body.push(new Block(50+x*10, 50, 10, 10, this.bodyColor));
@@ -96,9 +113,9 @@ class Snake {
 		}
 	}
 const canvas = new Canvas('#canvas');
-canvas.init();
 
 const snake = new Snake();
+canvas.init(snake);
 snake.init();
 
 canvas.randomizeField();
