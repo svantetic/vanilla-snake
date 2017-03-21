@@ -140,6 +140,16 @@ class Snake {
 		this.alive = false;
 	}
 
+	checkIfInsideCanvas(canvasWidth, canvasHeight) {
+		if (canvasWidth <= this.getLastBlockPosition().x ||
+			canvasHeight <= this.getLastBlockPosition().y ||
+			0 >= this.getLastBlockPosition().x ||
+			0 >= this.getLastBlockPosition().y) {
+			this.die();
+			console.log('snake is dead :/');
+		}
+	}
+
 }
 const canvas = new Canvas('#canvas');
 
@@ -148,14 +158,17 @@ canvas.init(snake);
 snake.init();
 
 canvas.randomizeField();
-
+let gameOver = false;
 function draw() {
     setTimeout(function() {
-        requestAnimationFrame(draw);
+    	if (!gameOver) {
+			requestAnimationFrame(draw);
 			canvas.clear();
 			snake.move();
 			snake.draw();
+			snake.checkIfInsideCanvas(canvas.canvas.width, canvas.canvas.height);
+			gameOver = !snake.isAlive();
+		}
     }, 1000 / config.fps);
-}
-
+   }
 draw();
