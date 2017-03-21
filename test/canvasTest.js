@@ -52,21 +52,15 @@ describe('Snake', function() {
 		assert.instanceOf(snake, Snake, 'snake is not instance of snake!');
 	});
 
-	it('should move right', function() {
-		let lastPosition = snake.getLastBlockPosition();
-		snake.init();
-		snake.draw();
-		snake.moveRight();
-		let secondOfLastBlockPosition = snake.body[snake.body.length - 2].x;
-		assert.equal(lastPosition.x, secondOfLastBlockPosition, 'snake is not moving!');
-	});
-	it('should have moveDown function', function() {
-		assert.isFunction(snake.moveDown, 'moveDown is not a function!');
-	})
 	it('should have direction property and changeDirection() function', function() {
 		assert.isDefined(snake.direction, 'snake does not have direction property');
-		assert.isFunction(snake.changeDirection(), 'snake does not have change Direction method');
-	})
+		assert.isFunction(snake.changeDirection, 'snake does not have change Direction method');
+	});
+
+	it('should have move() function', function() {
+		assert.isFunction(snake.move, 'snake does not have move method');
+	});
+
 	it('should have checkHeadPosition and checkHeadPosition should return snake\'s head position', function(){
 		assert.isDefined(snake.getHeadPosition(), 'x', 'function does not return x position');
 		assert.isDefined(snake.getHeadPosition(), 'y', 'function does not return x position');
@@ -77,6 +71,20 @@ describe('Snake', function() {
 	it('should have initEventListeners method', function() {
 		assert.isFunction(snake.initEventListeners, "snake does not have event initializer method");
 	});
+
+	it('should have working changeDirection method', function() {
+		assert.isFalse(snake.canChangeDirection('left', 'right'), 'snake can change direction from left to right');
+		assert.isFalse(snake.canChangeDirection('right', 'left'), 'snake can change direction from right to left');
+		assert.isFalse(snake.canChangeDirection('down', 'up'), 'snake can change direction from down to up');
+		assert.isFalse(snake.canChangeDirection('up', 'down'), 'snake can change direction from up to down');
+
+	});
+
+	it('should have alive property, is alive method and die() method', function() {
+		assert.isDefined(snake.alive, 'snake does not have alive method');
+		assert.isFunction(snake.isAlive, 'snake does not have isAlive method');
+		assert.isFunction(snake.die, 'snake does not have die method');
+	})
 });
 
 

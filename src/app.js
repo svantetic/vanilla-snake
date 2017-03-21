@@ -2,7 +2,9 @@ const config = {
 	randomDotsColor: 'red',
 	backgroundColor: 'black',
 	snakeColor: 'white',
-	snakeLength: 3
+	snakeLength: 6,
+	snakeDirection: 'right',
+	fps: 15
 };
 class Canvas {
 	constructor(selector) {
@@ -47,7 +49,10 @@ class Snake {
 		this.body = [];
 		this.bodyColor = config.snakeColor;
 		this.blocksNumber = config.snakeLength;
+		this.direction = config.snakeDirection;
+		this.alive = true;
 	}
+
 
 	initEventListeners() {
 		var self = this;
@@ -56,18 +61,22 @@ class Snake {
 			switch (keyPressed) {
 				case 'a': 
 					self.changeDirection('left');
+					break;
 				case 'w':
 					self.changeDirection('up');
+					break;
 				case 'd':
-					self.changeDirection('left');
+					self.changeDirection('right');
+					break;
 				case 's':
 					self.changeDirection('down');
+					break;
 			}
 		}, false);
 	}
 	init() {
 		for (let x = 0; x < this.blocksNumber; x++) {
-			this.body.push(new Block(50+x*10, 50, 10, 10, this.bodyColor));
+			this.body.push(new Block(50 + x * 10, 50, 10, 10, this.bodyColor));
 		}
 	}
 	getHeadPosition() {
@@ -76,31 +85,42 @@ class Snake {
 			y: this.body[0].y
 		}
 	}
-	moveRight() {
-		this.body.shift();
-		this.body.push(
-			new Block(this.getLastBlockPosition().x+10, this.getLastBlockPosition().y, 10, 10, this.bodyColor));
+	changeDirection(newDirection) {
+		console.log('old direction ' + this.direction + ' new direction ' + newDirection);
+		if (this.canChangeDirection(this.direction, newDirection)) {
+				this.direction = newDirection;
+		}
 	}
 
-	moveDown() {
-		this.body.shift();
-		this.body.push(
-			new Block(this.getLastBlockPosition().x, this.getLastBlockPosition().y + 10, 10, 10, this.bodyColor));
+	canChangeDirection(oldDirection, newDirection) {
+		return !(oldDirection == 'up' && newDirection == 'down'
+			|| oldDirection == 'down' && newDirection == 'up'
+			|| oldDirection == 'left' && newDirection == 'right'
+			|| oldDirection == 'right' && newDirection == 'left');
 	}
-
-	moveUp() {
-		this.body.shift();
-		this.body.push(new Block(this.getLastBlockPosition().x, this.getLastBlockPosition().y - 10, 10, 10, this.bodyColor));
-	}
-
-	moveLeft() {
-		this.body.shift();
-		this.body.push(new Block(this.getLastBlockPosition().x - 10, this.getLastBlockPosition().y, 10, 10, this.bodyColor));
+	move() {
+		let self = this;
+		self.body.shift();
+		switch (this.direction) {
+			case 'up':
+			self.body.push(new Block(this.getLastBlockPosition().x, this.getLastBlockPosition().y - 10, 10, 10, this.bodyColor));
+				break;
+			case 'left':
+			self.body.push(new Block(this.getLastBlockPosition().x - 10, this.getLastBlockPosition().y, 10, 10, this.bodyColor));
+				break;
+			case 'right':
+			self.body.push(new Block(this.getLastBlockPosition().x + 10, this.getLastBlockPosition().y, 10, 10, this.bodyColor));
+				break;
+			case 'down':
+			self.body.push(new Block(this.getLastBlockPosition().x, this.getLastBlockPosition().y + 10, 10, 10, this.bodyColor));
+				break;
+			
+		}
 	}
 	getLastBlockPosition() {
 		return {
-					x: this.body[this.body.length-1].x,
-					y: this.body[this.body.length-1].y
+					x: this.body[this.body.length - 1].x,
+					y: this.body[this.body.length - 1].y
 				}
 		}
 
@@ -111,7 +131,16 @@ class Snake {
 				this.body[blockNumber].width, this.body[blockNumber].height);
 			}
 		}
+
+	isAlive() {
+		return this.alive;
 	}
+
+	die() {
+		this.alive = false;
+	}
+
+}
 const canvas = new Canvas('#canvas');
 
 const snake = new Snake();
@@ -120,13 +149,13 @@ snake.init();
 
 canvas.randomizeField();
 
-const fps = 15;
 function draw() {
     setTimeout(function() {
         requestAnimationFrame(draw);
 			canvas.clear();
+			snake.move();
 			snake.draw();
-    }, 1000 / fps);
+    }, 1000 / config.fps);
 }
 
 draw();
