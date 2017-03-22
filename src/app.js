@@ -14,13 +14,30 @@ class BaseCanvas {
 	}
 }
 
-class HUDCanvas extends BaseCanvas{
-	constructor(selector) {
+class HUDCanvas extends BaseCanvas {
+	constructor(selector, gameWidth, gameHeight) {
 		super(selector);
+		this.gameWidth = gameWidth;
+		this.gameHeight = gameHeight;
+		this.fontFamily = 'Helvetica';
+		this.fontSize = '24px';
+		this.score = 0;
+	}
+
+	init(hudText) {
+		this.ctx.font = `${this.fontSize} ${this.fontFamily}`;
+		this.ctx.fillStyle = 'white';
+		this.ctx.fillText(`Score ${this.score}`, this.gameWidth - 120, 35);
+	}
+
+	incrementScore() {
+		this.score++;
+		this.ctx.clearRect(0, 0, this.gameWidth, this.gameHeight);
+		this.ctx.fillText(`Score ${this.score}`, this.gameWidth - 120, 35);
 	}
 }
 
-class PointCanvas extends BaseCanvas{
+class PointCanvas extends BaseCanvas {
 	constructor(selector) {
 		super(selector);
 		this.randomDotPosition = {};
@@ -32,17 +49,13 @@ class PointCanvas extends BaseCanvas{
 
 		this.randomDotPosition.x = (Math.round(Math.random() * this.canvas.width / 10) * 10);
 		this.randomDotPosition.y = (Math.round(Math.random() * this.canvas.height / 10) * 10);
-		console.log('generated x: ' + this.randomDotPosition.x + ' y: ' + this.randomDotPosition.y);
 		this.ctx.fillStyle = this.randomDotsColor;
 		this.ctx.fillRect(this.randomDotPosition.x, this.randomDotPosition.y, 10, 10);
 
 	}
 
 	clear() {
-
-		
 		this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
 	}
 
 }
@@ -78,13 +91,14 @@ class Block {
 }
 
 class Snake {
-	constructor() {
+	constructor(hudCanvas) {
 		this.body = [];
 		this.bodyColor = config.snakeColor;
 		this.blocksNumber = config.snakeLength;
 		this.direction = config.snakeDirection;
 		this.alive = true;
 		this.scorePointPosition = {};
+		this.hudCanvas = hudCanvas;
 	}
 
 
@@ -120,7 +134,6 @@ class Snake {
 		}
 	}
 	changeDirection(newDirection) {
-		console.log('old direction ' + this.direction + ' new direction ' + newDirection);
 		if (this.canChangeDirection(this.direction, newDirection)) {
 				this.direction = newDirection;
 		}
@@ -180,7 +193,6 @@ class Snake {
 			0 >= this.getLastBlockPosition().x ||
 			0 >= this.getLastBlockPosition().y) {
 			this.die();
-			console.log('snake is dead :/');
 			
 		}
 	}
@@ -192,7 +204,7 @@ class Snake {
 			this.body.push(new Block(pointCanvas.randomDotPosition.x, pointCanvas.randomDotPosition.y, this.bodyColor));
 			pointCanvas.clear();
 			pointCanvas.generateNewRandomDot();
-				console.log('you have scored!');
+			this.hudCanvas.incrementScore();
 		}
 	}
 
@@ -209,11 +221,15 @@ class Snake {
 }
 const gameCanvas = new GameCanvas('#game-canvas');
 const pointCanvas = new PointCanvas('#point-canvas');
-const snake = new Snake();
+const hudCanvas = new HUDCanvas('#hud-canvas', gameCanvas.canvas.width, gameCanvas.canvas.height);
+const snake = new Snake(hudCanvas);
+
+hudCanvas.init('Score');
 gameCanvas.init(snake);
 snake.init();
 
 pointCanvas.generateNewRandomDot();
+
 let gameOver = false;
 function draw() {
     setTimeout(function() {
