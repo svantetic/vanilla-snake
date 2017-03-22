@@ -7,12 +7,22 @@ const config = {
 	fps: 15
 };
 
-class HUDCanvas {}
-
-class PointCanvas {
+class BaseCanvas {
 	constructor(selector) {
 		this.canvas = document.querySelector(selector);
 		this.ctx = this.canvas.getContext('2d');
+	}
+}
+
+class HUDCanvas extends BaseCanvas{
+	constructor(selector) {
+		super(selector);
+	}
+}
+
+class PointCanvas extends BaseCanvas{
+	constructor(selector) {
+		super(selector);
 		this.randomDotPosition = {};
 		this.randomDotsColor = config.randomDotsColor;
 		this.backgroundColor = 'rgba(0,0,0,0)';
@@ -37,12 +47,10 @@ class PointCanvas {
 
 }
 
-class GameCanvas {
+class GameCanvas extends BaseCanvas{
 	constructor(selector) {
-		this.canvas = document.querySelector(selector);
-		this.ctx = this.canvas.getContext('2d');
+		super(selector);
 		this.dotsOnField = [];
-
 		this.backgroundColor = config.backgroundColor;
 	}
 
