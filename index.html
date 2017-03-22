@@ -3,26 +3,54 @@
 	<head>
 		<title>Vanilla Snake</title>
 	</head>
-	<link rel="stylesheet" href="node_modules/mocha/mocha.css">
+	<!-- <link rel="stylesheet" href="node_modules/mocha/mocha.css"> -->
+	<style>
+		body {
+			margin: 0;
+		}
+		.canvas-container {
+			position: relative;
+		}
+
+		.canvas {
+			position: absolute;
+			top: 0;
+			z-index: 1;
+		}
+
+		#point-canvas {
+			z-index: 2;
+		}
+
+		#mocha {
+			margin: 0;
+		}
+	</style>
 	<body>
-		<canvas width="800" height="300"id="canvas">
+		<div class="canvas-container">
+			<canvas class="canvas" width="800" height="300" id="game-canvas">
 			
-		</canvas>
-		<div id="mocha">
-			
+			</canvas>
+			<canvas class="canvas" width="800" height="300" id="point-canvas">
+				
+			</canvas>
 		</div>
+		
+		<!-- <div id="mocha">
+			
+		</div> -->
 	</body>
 	
-	<script src="node_modules/mocha/mocha.js"></script>
+<!-- 	<script src="node_modules/mocha/mocha.js"></script>
     <script src="node_modules/chai/chai.js"></script>
     <script>mocha.setup('bdd')</script>
-
+ -->
     <script src="src/app.js"></script>
 
-    <script src="test/canvasTest.js"></script>
+   <!--  <script src="test/canvasTest.js"></script> -->
 
-    <script>
+  <!--   <script>
       mocha.run();
-    </script>
+    </script> -->
   </body>
 </html>
