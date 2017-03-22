@@ -30,10 +30,8 @@ class PointCanvas {
 
 	clear() {
 
-		this.ctx.fillStyle = 'black';
-		this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-		this.ctx.fillStyle = this.backgroundColor;
-		this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+		
+		this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
 	}
 
@@ -190,6 +188,16 @@ class Snake {
 		}
 	}
 
+	checkCollisionWithItself() {
+		let self = this;
+		for (let i = 0; i < this.body.length - 1; i++)
+			if (self.getLastBlockPosition().x == this.body[i].x && self.getLastBlockPosition().y == this.body[i].y) {
+				self.die();
+				return;
+			}
+		
+	}
+
 }
 const gameCanvas = new GameCanvas('#game-canvas');
 const pointCanvas = new PointCanvas('#point-canvas');
@@ -206,6 +214,7 @@ function draw() {
 			gameCanvas.clear();
 			snake.move();
 			snake.draw(gameCanvas);
+			snake.checkCollisionWithItself();
 			snake.checkIfScored(pointCanvas);
 			snake.checkIfInsideCanvas(gameCanvas.canvas.width, gameCanvas.canvas.height);
 			gameOver = !snake.isAlive();
