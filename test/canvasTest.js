@@ -1,6 +1,17 @@
 var assert = chai.assert;
 var expect = chai.expect;
+
+describe("BaseCanvas", function() {
+	it('should have canvas and context property', function() {
+		let baseCanvas = new BaseCanvas('#game-canvas');
+		assert.isDefined(baseCanvas.canvas, 'BaseCanvas does not have canvas');
+		assert.isDefined(baseCanvas.ctx, 'BaseCanvas does not have ctx');
+	});
+})
 describe("Canvas", function() {
+	before(function() {
+		gameOver = true;
+	})
 	it('should be object', function() {
 		
 		assert(typeof gameCanvas == 'object', 'canvas is not an object!');
@@ -10,6 +21,9 @@ describe("Canvas", function() {
 		assert.instanceOf(gameCanvas, GameCanvas, 'canvas is not instance of Canvas');
 	})
 
+	it('should extend BaseCanvas class', function() {
+		assert.instanceOf(gameCanvas, BaseCanvas, 'gameCanvas is not extending BaseCanvas');
+	})
 	it('should have id canvas', function() {
 		assert(gameCanvas.canvas.id == 'game-canvas', 'canvas is not of id canvas!');
 	});

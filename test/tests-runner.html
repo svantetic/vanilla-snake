@@ -3,27 +3,13 @@
 	<head>
 		<title>Vanilla Snake</title>
 	</head>
-	<!-- <link rel="stylesheet" href="node_modules/mocha/mocha.css"> -->
+	<link rel="stylesheet" href="../node_modules/mocha/mocha.css">
 	<style>
 		body {
 			margin: 0;
 		}
 		.canvas-container {
-			position: relative;
-		}
-
-		.canvas {
-			position: absolute;
-			top: 0;
-			z-index: 1;
-		}
-
-		#point-canvas {
-			z-index: 2;
-		}
-
-		#hud-canvas {
-			z-index: 3;
+			display: none;
 		}
 		#mocha {
 			margin: 0;
@@ -44,11 +30,21 @@
 			</canvas>
 		</div>
 		
-		
+		<div id="mocha">
+			
+		</div>
 	</body>
 	
+	<script src="../node_modules/mocha/mocha.js"></script>
+    <script src="../node_modules/chai/chai.js"></script>
+    <script>mocha.setup('bdd')</script>
 
-    <script src="dist/app.js"></script>
+    <script src="../dist/app.js"></script>
 
+    <script src="./canvasTest.js"></script>
+
+    <script>
+      mocha.run();
+    </script>
   </body>
 </html>
