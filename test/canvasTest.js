@@ -52,7 +52,11 @@ describe("Canvas", function() {
 		
 	})
 })
-
+describe('HUDCanvas', function() {
+	it('should extend BaseCanvas', function() {
+		
+	})
+})
 describe('Snake', function() {
 	it('should have config element for snake length larger than 1', function() {
 		expect(config).to.have.property('snakeLength').and.to.be.above(2);
@@ -107,4 +111,18 @@ describe('Block' ,function() {
 		var testBlock = new Block();
 		assert.instanceOf(testBlock, Block, 'block is not instance of Block!');
 	})
+})
+
+
+describe('HUD Canvas', function() {
+	it('should increment score', function() {
+		let hudCanvas = new HUDCanvas("#hud-canvas", 300, 300);
+		let initialScore = hudCanvas.score;
+		hudCanvas.incrementScore();
+		assert.equal(initialScore + 1, hudCanvas.score, "it does not increment score");
+	});
+	it('should have 0 score at the beginning', function(){
+		let hudCanvas = new HUDCanvas("#hud-canvas", 300, 300);
+		assert.equal(hudCanvas.score, 0, "it does not have 0 score at the beginning");
+	});
 })
