@@ -1,6 +1,6 @@
+'use strict';
 var assert = chai.assert;
 var expect = chai.expect;
-
 describe("BaseCanvas", function() {
 	it('should have canvas and context property', function() {
 		let baseCanvas = new BaseCanvas('#game-canvas');

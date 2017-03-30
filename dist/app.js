@@ -34,6 +34,7 @@ var HUDCanvas = function (_BaseCanvas) {
 
 		_this.gameWidth = gameWidth;
 		_this.gameHeight = gameHeight;
+		_this.fontWidthOffset = -150;
 		_this.fontFamily = 'Helvetica';
 		_this.fontSize = '24px';
 		_this.score = 0;
@@ -45,14 +46,20 @@ var HUDCanvas = function (_BaseCanvas) {
 		value: function init(hudText) {
 			this.ctx.font = this.fontSize + ' ' + this.fontFamily;
 			this.ctx.fillStyle = 'white';
-			this.ctx.fillText('Score ' + this.score, this.gameWidth - 120, 35);
+			this.ctx.fillText('Score ' + this.score, this.gameWidth + this.fontWidthOffset, 35);
 		}
 	}, {
 		key: 'incrementScore',
 		value: function incrementScore() {
 			this.score++;
 			this.ctx.clearRect(0, 0, this.gameWidth, this.gameHeight);
-			this.ctx.fillText('Score ' + this.score, this.gameWidth - 120, 35);
+			this.ctx.fillText('Score ' + this.score, this.gameWidth + this.fontWidthOffset, 35);
+		}
+	}, {
+		key: 'setText',
+		value: function setText(textToSet) {
+			this.ctx.clearRect(0, 0, this.gameWidth, this.gameHeight);
+			this.ctx.fillText('' + textToSet, this.gameWidth + this.fontWidthOffset, 35);
 		}
 	}]);
 
@@ -192,7 +199,7 @@ var Snake = function () {
 	}, {
 		key: 'canChangeDirection',
 		value: function canChangeDirection(oldDirection, newDirection) {
-			return !(oldDirection == 'up' && newDirection == 'down' || oldDirection == 'down' && newDirection == 'up' || oldDirection == 'left' && newDirection == 'right' || oldDirection == 'right' && newDirection == 'left');
+			return !(oldDirection === 'up' && newDirection === 'down' || oldDirection == 'down' && newDirection == 'up' || oldDirection == 'left' && newDirection == 'right' || oldDirection == 'right' && newDirection == 'left');
 		}
 	}, {
 		key: 'move',
@@ -240,6 +247,7 @@ var Snake = function () {
 		key: 'die',
 		value: function die() {
 			this.alive = false;
+			this.hudCanvas.setText("Game Over!");
 		}
 	}, {
 		key: 'checkIfInsideCanvas',
@@ -293,10 +301,10 @@ function draw() {
 			requestAnimationFrame(draw);
 			gameCanvas.clear();
 			snake.move();
-			snake.draw(gameCanvas);
 			snake.checkCollisionWithItself();
 			snake.checkIfScored(pointCanvas);
 			snake.checkIfInsideCanvas(gameCanvas.canvas.width, gameCanvas.canvas.height);
+			snake.draw(gameCanvas);
 			gameOver = !snake.isAlive();
 		}
 	}, 1000 / config.fps);

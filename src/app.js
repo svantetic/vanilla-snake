@@ -19,6 +19,7 @@ class HUDCanvas extends BaseCanvas {
 		super(selector);
 		this.gameWidth = gameWidth;
 		this.gameHeight = gameHeight;
+		this.fontWidthOffset = -150;
 		this.fontFamily = 'Helvetica';
 		this.fontSize = '24px';
 		this.score = 0;
@@ -27,13 +28,18 @@ class HUDCanvas extends BaseCanvas {
 	init(hudText) {
 		this.ctx.font = `${this.fontSize} ${this.fontFamily}`;
 		this.ctx.fillStyle = 'white';
-		this.ctx.fillText(`Score ${this.score}`, this.gameWidth - 120, 35);
+		this.ctx.fillText(`Score ${this.score}`, this.gameWidth + this.fontWidthOffset, 35);
 	}
 
 	incrementScore() {
 		this.score++;
 		this.ctx.clearRect(0, 0, this.gameWidth, this.gameHeight);
-		this.ctx.fillText(`Score ${this.score}`, this.gameWidth - 120, 35);
+		this.ctx.fillText(`Score ${this.score}`, this.gameWidth + this.fontWidthOffset, 35);
+	}
+
+	setText(textToSet) {
+        this.ctx.clearRect(0, 0, this.gameWidth, this.gameHeight);
+        this.ctx.fillText(`${textToSet}`, this.gameWidth + this.fontWidthOffset, 35);
 	}
 }
 
@@ -140,7 +146,7 @@ class Snake {
 	}
 
 	canChangeDirection(oldDirection, newDirection) {
-		return !(oldDirection == 'up' && newDirection == 'down'
+		return !(oldDirection === 'up' && newDirection === 'down'
 			|| oldDirection == 'down' && newDirection == 'up'
 			|| oldDirection == 'left' && newDirection == 'right'
 			|| oldDirection == 'right' && newDirection == 'left');
@@ -185,6 +191,7 @@ class Snake {
 
 	die() {
 		this.alive = false;
+		this.hudCanvas.setText("Game Over!");
 	}
 
 	checkIfInsideCanvas(canvasWidth, canvasHeight) {
@@ -237,11 +244,11 @@ function draw() {
 			requestAnimationFrame(draw);
 			gameCanvas.clear();
 			snake.move();
-			snake.draw(gameCanvas);
 			snake.checkCollisionWithItself();
-			snake.checkIfScored(pointCanvas);
-			snake.checkIfInsideCanvas(gameCanvas.canvas.width, gameCanvas.canvas.height);
-			gameOver = !snake.isAlive();
+            snake.checkIfScored(pointCanvas);
+            snake.checkIfInsideCanvas(gameCanvas.canvas.width, gameCanvas.canvas.height);
+            snake.draw(gameCanvas);
+            gameOver = !snake.isAlive();
 		}
     }, 1000 / config.fps);
    }
