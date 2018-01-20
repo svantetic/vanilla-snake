@@ -5,30 +5,41 @@ import { PointCanvas } from './game/canvas/PointCanvas';
 import { HUDCanvas } from './game/canvas/HUDCanvas';
 import { Snake } from './game/objects/Snake';
 
-const gameCanvas: GameCanvas = new GameCanvas('#game-canvas');
-const pointCanvas: PointCanvas = new PointCanvas('#point-canvas');
-const hudCanvas: HUDCanvas = new HUDCanvas('#hud-canvas', gameCanvas.canvas.width, gameCanvas.canvas.height);
-const snake: Snake = new Snake(hudCanvas);
+class MainGame {
+	gameOver: boolean;
+	gameCanvas: GameCanvas = new GameCanvas('#game-canvas');
+	pointCanvas: PointCanvas = new PointCanvas('#point-canvas');
+	hudCanvas: HUDCanvas = new HUDCanvas('#hud-canvas', this.gameCanvas.canvas.width, this.gameCanvas.canvas.height);
+	snake: Snake = new Snake(this.hudCanvas);
+	constructor() {
+		this.gameOver = false;
+		this.initGameObjects();
+	}
 
-hudCanvas.init('Score');
-gameCanvas.init(snake);
-snake.init();
+	initGameObjects() {
 
-pointCanvas.generateNewRandomDot();
+		this.hudCanvas.init('Score');
+		this.gameCanvas.init(this.snake);
+		this.snake.init();
+		this.pointCanvas.generateNewRandomDot();
+		this.draw();
+	}
+	draw() {
+		setTimeout(() => {
+			if (!this.gameOver) {
+				window.requestAnimationFrame(() => {
+					this.draw()
+				});
+				this.gameCanvas.clear();
+				this.snake.move();
+				this.snake.checkCollisionWithItself();
+				this.snake.checkIfScored(this.pointCanvas);
+				this.snake.checkIfInsideCanvas(this.gameCanvas.canvas.width, this.gameCanvas.canvas.height);
+				this.snake.draw(this.gameCanvas);
+				this.gameOver = !this.snake.isAlive();
+			}
+		}, 1000 / gameConfig.fps);
+	}
+};
 
-let gameOver: boolean = false;
-function draw() {
-    setTimeout(function() {
-    	if (!gameOver) {
-				requestAnimationFrame(draw);
-				gameCanvas.clear();
-				snake.move();
-				snake.checkCollisionWithItself();
-				snake.checkIfScored(pointCanvas);
-				snake.checkIfInsideCanvas(gameCanvas.canvas.width, gameCanvas.canvas.height);
-				snake.draw(gameCanvas);
-				gameOver = !snake.isAlive();
-		}
-    }, 1000 / gameConfig.fps);
-   }
-draw();
+const game = new MainGame();
